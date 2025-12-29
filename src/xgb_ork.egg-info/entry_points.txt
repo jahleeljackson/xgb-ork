@@ -1,0 +1,2 @@
+[console_scripts]
+xgb = app:cli

@@ -1,0 +1,19 @@
+[project]
+name = "xgb-ork"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12.10"
+dependencies = [
+    "click>=8.3.1",
+    "loguru>=0.7.3",
+    "pandas>=2.3.3",
+    "pyyaml>=6.0.3",
+    "scikit-learn>=1.8.0",
+    "xgboost>=2.0.0",
+]
+
+
+
+[project.scripts]
+xgb = "app:cli"

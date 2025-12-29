@@ -1,0 +1,98 @@
+Metadata-Version: 2.4
+Name: xgb-ork
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.12.10
+Description-Content-Type: text/markdown
+Requires-Dist: click>=8.3.1
+Requires-Dist: loguru>=0.7.3
+Requires-Dist: pandas>=2.3.3
+Requires-Dist: pyyaml>=6.0.3
+Requires-Dist: scikit-learn>=1.8.0
+Requires-Dist: xgboost>=3.1.2
+
+# XGBoosted Orchestrator
+
+## Project Description
+
+This project proposes to simplify the model deployment and monitoring workflow for the open-source [XGBoost](https://xgboost.readthedocs.io/en/stable/) library. Key features entail:
+
+1. Realtime monitoring of model metrics
+    
+    Critical metrics of a model should be continuously presented to users via the terminal or browser. 
+
+2. Logging & interval configuration
+
+    Model events and metrics should be automatically logged to a persistent store. Access to logged information should be as simple and intuitive as possible.
+
+3. Model configuration
+
+    The parameters of the model should be able to configured via the terminal in an elegant way. 
+
+4. Model project instantiation
+
+    Workflows are abstracted into individual project instances which contain specified configurations and metadata. 
+
+
+Object-oriented paradigms 
+
+```python
+class Status(Enum):
+    Ok = True
+    Err = False
+
+
+class PredictionType(Enum):
+    C = True
+    R = False
+
+class Metrics:
+    def __init__(self, ptype: PredictionType)
+
+
+class ProjectStore:
+    def __init__(self):
+        self.root: str
+
+    def add(self, name: str) -> Status:
+    def display(self) -> None:
+    def rename(self, old_name: str, new_name: str) -> Status:
+    def delete(self, name: str) -> Status:
+    
+
+class Project:
+    def __init__(self, name: str, ptype: PredictionType):
+        self.name: str = name
+        self.path: str = 
+        self.params: Dict = self._get_params()
+        self.champion: str = self._get_champion()
+
+    def train_xgb(self, model: str, params: Dict) -> None:
+    def config_model(self, model: Model, params: Dict) -> None:
+    def run(self, model: Model, data_path: str, mode: str = "default") -> None: 
+    def delete_model(self, name: str) -> Status:
+
+    def show(self) -> None:
+
+
+class DataStore:
+    def __init__(self): 
+        self.path: str
+
+    def add(self, name: str) -> Status:
+    def show(self, name: str) -> None:
+    def update(self, old_name: str, new_name: str) -> Status:
+    def delete(self, name: str) -> Status:
+    
+
+class Model:
+    def __init__(self, name: str):
+        self.name: str = name
+        self.params: Dict = self._get_model_params()
+        self.model: xgb.XGBClassifier() | xgb.XGBRegressor()
+        self.metrics: Dict = self._get_model_metrics()
+
+    def show_metadata(self) -> None:
+```
+
+

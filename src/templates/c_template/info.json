@@ -1,0 +1,10 @@
+{
+    "project_info": {
+        "name": null,
+        "created_at": null, 
+        "prediction_type": "Classification",
+        "champion": null,
+        "models": [
+        ]
+    }
+}

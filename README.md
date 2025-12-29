@@ -21,6 +21,22 @@ This project proposes to simplify the model deployment and monitoring workflow f
     Workflows are abstracted into individual project instances which contain specified configurations and metadata. 
 
 
-Object-oriented paradigms 
+**Commands**
 
+```bash
+# Project Store level
+xgb init {r|c} {project_name}
+xgb list
+xgb delete {project_name}
 
+# Data Store level
+xgb add {data_path} {data_name}
+xgb data
+xgb remove {data_name}
+
+# Project Instance level
+xgb train {project_name} {dataset}
+xgb config {project_name} 
+xgb show {project_name}
+
+```
