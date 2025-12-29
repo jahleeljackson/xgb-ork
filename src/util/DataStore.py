@@ -15,6 +15,8 @@ class DataStore:
 
     def add(self, source_file: str, file_name: str) -> Status:
 
+        self.files = self._get_files()
+
         if f"{file_name}.csv" in self.files:
             raise click.UsageError(f"{file_name}.csv already exists.")
 

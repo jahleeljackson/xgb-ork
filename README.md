@@ -66,7 +66,16 @@ Feel free to watch this [video]() of me giving a project demo. Otherwise follow 
 % xgb init foo c # initialized a classification (c) project named foo 
 ```
 
-2. 
+2. See existing projects.
+```bash
+% xgb list 
+```
+
+3. Add a dataset to the data store.
+```bash
+# test dataset provided 
+% xgb add {pwd}/src/testing/test_data.csv foo # xgb add {source_file_path} {name of data in datastore}
+```
 
 **Curl Test Command**
 
