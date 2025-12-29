@@ -37,14 +37,14 @@ Prerequisites:
 % cd xgb-ork
 ``` 
 
-3. Activate the virtual environment
-```bash
-% source .venv/bin/activate
-```
-
-4. Sync libraries with uv
+3. Sync libraries with uv
 ```bash
 % uv sync 
+```
+
+4. Activate the virtual environment
+```bash
+% source .venv/bin/activate
 ```
 
 5. Install xgb
@@ -61,7 +61,12 @@ Prerequisites:
 
 Feel free to watch this [video]() of me giving a project demo. Otherwise follow the steps below:
 
-1. 
+1. Initialize a new project using the init command.
+```bash
+% xgb init foo c # initialized a classification (c) project named foo 
+```
+
+2. 
 
 **Curl Test Command**
 
