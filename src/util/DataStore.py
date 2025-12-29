@@ -31,6 +31,14 @@ class DataStore:
         except:
             return Status.Err
         
+    
+    def expand(self, file_name: str):
+        if not self.file_exists(file_name=file_name):
+            raise click.UsageError(f"{file_name} is not an available dataset")
+        data_path = self.root + f"/{file_name}.csv"
+        df = pd.read_csv(data_path)
+        print(df)
+
 
     def retrieve(self, file_name: str) -> pd.DataFrame:
         data_path = self.root + f"/{file_name}.csv"

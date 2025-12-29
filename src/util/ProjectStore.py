@@ -54,10 +54,13 @@ class ProjectStore:
         if name not in self.projects:
             raise click.UsageError(f"{name} is not an existing project.")
 
+
+
         project_path: str = self.root + f"/{name}"
 
         try:
             subprocess.run(["rm", "-rf", project_path], check=True)
+            logger.info(f"{name} successfully deleted.")
         
         except Exception as e:
             print(f"Error add {name} to project store.")

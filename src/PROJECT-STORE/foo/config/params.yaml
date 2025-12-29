@@ -17,7 +17,7 @@ verbosity: 2  # 0=silent, 1=warning, 2=info, 3=debug
 
 # Dataset parameters 
 test_size: 0.2
-target_column: None
+target_column: Species 
 
 # Model name
 model_name: model1

@@ -1,17 +1,14 @@
-import click
-
-from util.DataStore import DataStore 
-from util.Project import Project
-from util.ProjectStore import ProjectStore
-from util.types import Status, PredictionType, ModelRun
-
-regression = PredictionType.R 
-classification = PredictionType.C
-
-datastore = DataStore()
-projectstore = ProjectStore() 
+import time 
 
 
-projectstore.add("foo", ptype=PredictionType.C)
-foo = Project(name="foo", ptype=PredictionType.C)
-foo.show()
+start = time.perf_counter()
+
+x = 0
+for i in range(1_000):
+    x += 1
+
+stop = time.perf_counter()
+
+dur = stop - start 
+
+print(dur)

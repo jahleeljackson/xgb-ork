@@ -7,11 +7,14 @@ from loguru import logger
 from xgboost import XGBClassifier, XGBRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, accuracy_score, f1_score, precision_score, recall_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 import click
 import pandas as pd
+from datetime import datetime 
+from zoneinfo import ZoneInfo
+import time
 
-from util.types import Status, PredictionType, ModelRun
+from util.types import Status, PredictionType
 from util.DataStore import DataStore 
 from util.ModelInfo import ModelInfo
 
@@ -35,7 +38,7 @@ class Project:
         if not datastore.file_exists(file_name=data_file):
             raise click.UsageError(f"{data_file} does not exist in data store.")
 
-        logger.info(f"Training XGBoosted {self.ptype.value} model.")
+        logger.info(f"Training XGBoosted model.")
 
         logger.info("Retrieving parameters from params.yaml.")
         self.params: Dict = self._get_params()
@@ -44,13 +47,19 @@ class Project:
         logger.info("Retrieving dataset from data store.")
         dataset: pd.DataFrame = datastore.retrieve(file_name=data_file)
 
-        X = dataset.drop(columns=self.params["target_column"])
-        y = dataset[self.params["target_column"]]
+        try:
+            X = dataset.drop(columns=self.params["target_column"], axis=1)
+            y = dataset[self.params["target_column"]]
+        except:
+            raise click.UsageError(f"Error getting target column. Make sure column is defined in params.yaml.")
+
+        label_encoder = LabelEncoder()
+        y = label_encoder.fit_transform(y)
 
         X_train, X_test, y_train, y_test = train_test_split(X, y,
                                                             test_size=self.params["test_size"],
                                                             random_state=self.params["random_state"])
-        
+
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
@@ -65,8 +74,11 @@ class Project:
         else:
             xgb = XGBClassifier(**model_params)
 
-        
+        start = time.perf_counter()
         xgb.fit(X_train_scaled, y_train)
+        stop = time.perf_counter()
+
+        duration = str(round(stop - start, 5)) + " seconds"
 
         if self.ptype == PredictionType.R:
             preds = xgb.predict(X_test_scaled)
@@ -88,8 +100,17 @@ class Project:
 
 
         model_name = self.params["model_name"]
-        
-        model_run = ModelRun(name=model_name, metrics=metrics)
+
+        run_time = self._get_time()
+
+        metrics["train_time"] = duration
+
+        model_run = {
+            "name": model_name,
+            "run time": run_time,
+            "dataset": data_file,
+            "metrics": metrics
+        }
 
         self.modelinfo.update(info_title="models", value=model_run)
 
@@ -110,11 +131,9 @@ class Project:
             print(f"Error configuring {self.name}'s model parameters: ", e)
 
 
-    def run(self, model: str, data_path: str, mode: str = "default") -> None: 
+    def run(self, model: str) -> None: 
         pass
 
-
-            
 
     def delete_model(self, name: str) -> Status:
 
@@ -143,7 +162,8 @@ class Project:
         model_path = self.path + f"/models/{model_name}.json"
 
         try:
-            model.save_model(model_path)
+            booster = model.get_booster()
+            booster.save_model(model_path)
             return Status.Ok
 
         except Exception as e:
@@ -175,3 +195,8 @@ class Project:
     def _get_models(self):
         models_dir = self.path + "/models"
         return os.listdir(models_dir)
+    
+    def _get_time(self) -> str:
+        tz = ZoneInfo("UTC")
+        now = datetime.now(tz)
+        return str(now)[10:19]

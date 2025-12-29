@@ -32,6 +32,7 @@ xgb delete {project_name}
 # Data Store level
 xgb add {data_path} {data_name}
 xgb data
+xgb expand {data_name}
 xgb remove {data_name}
 
 # Project Instance level

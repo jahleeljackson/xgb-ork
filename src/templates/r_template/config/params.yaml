@@ -28,11 +28,8 @@ tree_method: "auto"  # "auto", "exact", "approx", "hist", "gpu_hist"
 max_delta_step: 0
 base_score: 0.5
 
-# Early stopping
-early_stopping_rounds: 20
-
 # Verbosity
-verbosity: 1  # 1 shows warnings
+verbosity: 2  # 1 shows warnings
 
 # Dataset parameters 
 test_size: 0.2

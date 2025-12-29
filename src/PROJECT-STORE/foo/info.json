@@ -1,0 +1,22 @@
+{
+    "project_info": {
+        "name": "foo",
+        "created_at": "2025-12-29",
+        "prediction_type": "Classification",
+        "champion": null,
+        "models": [
+            {
+                "name": "model1",
+                "run time": " 17:35:36",
+                "dataset": "foo",
+                "metrics": {
+                    "Accuracy": 1.0,
+                    "F1": 1.0,
+                    "Precision": 1.0,
+                    "Recall": 1.0,
+                    "train_time": "0.05273 seconds"
+                }
+            }
+        ]
+    }
+}

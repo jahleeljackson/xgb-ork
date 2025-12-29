@@ -104,5 +104,11 @@ def show(project_name: str):
         raise click.UsageError(f"{project_name} does not exist.")
 
 
+@cli.command()
+@click.argument("dataset")
+def expand(dataset: str):
+    '''Display the contents of a particular dataset.'''
+    datastore.expand(file_name=dataset)
+
 if __name__=="__main__":
     cli()
