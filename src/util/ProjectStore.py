@@ -72,7 +72,9 @@ class ProjectStore:
         return False
 
     def _get_projects(self) -> List[str]:
-        return os.listdir(self.root).remove(".gitkeep")
+        projects = os.listdir(self.root)
+        # Filter out .gitkeep and any other non-project files
+        return [p for p in projects if p != ".gitkeep"]
 
 
     def _get_datetime(self) -> str:
