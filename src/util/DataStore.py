@@ -51,10 +51,11 @@ class DataStore:
 
 
     def show(self) -> None:
-        if len(self.files) == 0:
+        if not self.files:
             print("No datasets available.")
-        for file in self.files:
-            print(file) 
+        else:
+            for file in self.files:
+                print(file) 
 
 
     def delete(self, file_name: str) -> Status:

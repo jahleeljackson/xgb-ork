@@ -22,8 +22,46 @@ This project proposes to simplify the model deployment and monitoring workflow f
 
 ## Instructions to Download
 
-1. 
+Prerequisites:
+
+- install [uv](https://pypi.org/project/uv/)
+- python [3.12.10] must be installed (https://www.python.org/downloads/release/python-31210/)
+
+1. Clone this repo
+```bash
+% git clone https://github.com/jahleeljackson/xgb-ork.git
+```
+
+2. Navigate to project
+```bash
+% cd xgb-ork
+``` 
+
+3. Activate the virtual environment
+```bash
+% source .venv/bin/activate
+```
+
+4. Sync libraries with uv
+```bash
+% uv sync 
+```
+
+5. Install xgb
+```bash
+% pip install -e .
+``` 
+
+
+
+
+
+
 ## Instructions to Run
+
+Feel free to watch this [video]() of me giving a project demo. Otherwise follow the steps below:
+
+1. 
 
 **Curl Test Command**
 

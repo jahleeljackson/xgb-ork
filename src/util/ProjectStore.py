@@ -40,7 +40,7 @@ class ProjectStore:
 
     def display(self):
         projects: List[str] = self.projects
-        if len(projects) == 0:
+        if not projects:
             print("No existing projects.")
 
         else:
