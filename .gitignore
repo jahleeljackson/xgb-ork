@@ -8,4 +8,8 @@
 # Python files
 __pycache__/
 
+# Pip files
+xgb_ork.egg-info
 
+PROJECT-STORE/
+DATA-STORE/
