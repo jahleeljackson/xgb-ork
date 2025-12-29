@@ -72,7 +72,7 @@ class ProjectStore:
         return False
 
     def _get_projects(self) -> List[str]:
-        return os.listdir(self.root)
+        return os.listdir(self.root).remove(".gitkeep")
 
 
     def _get_datetime(self) -> str:

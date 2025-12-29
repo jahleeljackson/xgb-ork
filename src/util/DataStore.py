@@ -79,4 +79,4 @@ class DataStore:
 
 
     def _get_files(self):
-        return os.listdir(self.root)
+        return os.listdir(self.root).remove(".gitkeep")
