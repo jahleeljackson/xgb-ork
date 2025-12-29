@@ -4,7 +4,7 @@ import subprocess
 import os
 import yaml
 from loguru import logger
-from xgboost import XGBClassifier, XGBRegressor
+from xgboost import XGBClassifier, XGBRegressor, Booster
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score, accuracy_score, f1_score, precision_score, recall_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder
@@ -13,6 +13,11 @@ import pandas as pd
 from datetime import datetime 
 from zoneinfo import ZoneInfo
 import time
+from fastapi import FastAPI
+from pydantic import BaseModel
+import uvicorn
+import json 
+import numpy as np 
 
 from util.types import Status, PredictionType
 from util.DataStore import DataStore 
@@ -132,7 +137,107 @@ class Project:
 
 
     def run(self, model: str) -> None: 
-        pass
+        model_path = self.path + f"/models/{model}.json"
+
+        if not os.path.exists(model_path):
+            raise click.UsageError(f"Model file {model}.json does not exist in project models directory.")
+
+        logger.info(f"Loading XGBoost model from: {model_path}")
+
+        # Load model
+        booster = Booster()
+        booster.load_model(model_path)
+
+        # FastAPI Application ---------------------------------------------------
+        app = FastAPI(
+            title=f"{self.name} Inference Server",
+            description="XGBoost model inference API with logging and monitoring.",
+            version="1.0",
+        )
+
+        # Store monitoring stats
+        inference_count = {"total": 0}
+        last_latencies = []
+
+        # Request schema
+        class PredictRequest(BaseModel):
+            data: List[Dict]
+
+        # ----------------------------------------------------------------------
+        # Routes
+        # ----------------------------------------------------------------------
+
+        @app.get("/health")
+        def health():
+            return {"status": "ok", "model": model}
+
+        @app.get("/metadata")
+        def metadata():
+            return {
+                "project": self.name,
+                "model_file": f"{model}.json",
+                "prediction_type": str(self.ptype),
+                "loaded": True
+            }
+
+        @app.get("/metrics")
+        def metrics():
+            return {
+                "total_inferences": inference_count["total"],
+                "recent_latencies_ms": last_latencies[-20:]
+            }
+
+        @app.post("/predict")
+        def predict(payload: PredictRequest):
+            logger.info("Received prediction request")
+
+            # Convert to matrix
+            try:
+                df = pd.DataFrame(payload.data)
+            except Exception as e:
+                logger.error(f"Invalid input format: {e}")
+                return {"error": "Invalid input format"}
+
+            start = time.perf_counter()
+
+            try:
+                # Booster requires DMatrix input
+                import xgboost as xgb
+                dmatrix = xgb.DMatrix(df)
+                preds = booster.predict(dmatrix)
+                preds_list = preds.tolist()
+            except Exception as e:
+                logger.error(f"Prediction error: {e}")
+                return {"error": "Prediction failure"}
+
+            stop = time.perf_counter()
+            latency_ms = round((stop - start) * 1000, 4)
+
+            inference_count["total"] += 1
+            last_latencies.append(latency_ms)
+
+            logger.info(
+                f"Prediction done | latency={latency_ms}ms | num_records={len(df)}"
+            )
+
+            return {
+                "predictions": preds_list,
+                "latency_ms": latency_ms,
+                "records": len(df)
+            }
+
+        # ----------------------------------------------------------------------
+        # Start server
+        # ----------------------------------------------------------------------
+
+        logger.info("Starting inference server...")
+
+        uvicorn.run(
+            app,
+            host="0.0.0.0",
+            port=8000,
+            log_level="info"
+        )
 
 
     def delete_model(self, name: str) -> Status:
@@ -153,7 +258,7 @@ class Project:
         print(f"Project Name: {info["project_info"]["name"]}") 
         print(f"Created At: {info["project_info"]["created_at"]}")
         print(f"Prediction Type: {info["project_info"]["prediction_type"]}") 
-        print(f"Model Runs: {info["project_info"]["models"]}") 
+        print(f"Latest Model Run: {info["project_info"]["models"][-1]}") 
 
 
 

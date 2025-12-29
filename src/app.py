@@ -110,5 +110,16 @@ def expand(dataset: str):
     '''Display the contents of a particular dataset.'''
     datastore.expand(file_name=dataset)
 
+
+@cli.command()
+@click.argument("project_name")
+@click.argument("model_name")
+def run(project_name: str, model_name: str):
+    '''Run an inference server for the specified project and model.'''
+    project = Project(name=project_name)
+    project.run(model=model_name)
+
+
+
 if __name__=="__main__":
     cli()

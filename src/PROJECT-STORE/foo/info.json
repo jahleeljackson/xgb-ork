@@ -16,6 +16,18 @@
                     "Recall": 1.0,
                     "train_time": "0.05273 seconds"
                 }
+            },
+            {
+                "name": "model1",
+                "run time": " 17:43:08",
+                "dataset": "foo",
+                "metrics": {
+                    "Accuracy": 1.0,
+                    "F1": 1.0,
+                    "Precision": 1.0,
+                    "Recall": 1.0,
+                    "train_time": "0.06035 seconds"
+                }
             }
         ]
     }
