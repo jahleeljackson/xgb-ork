@@ -8,36 +8,184 @@ This project proposes to simplify the model deployment and monitoring workflow f
     
     Critical metrics of a model should be continuously presented to users via the terminal or browser. 
 
-2. Logging & interval configuration
-
-    Model events and metrics should be automatically logged to a persistent store. Access to logged information should be as simple and intuitive as possible.
-
-3. Model configuration
+2. Model configuration
 
     The parameters of the model should be able to configured via the terminal in an elegant way. 
 
-4. Model project instantiation
+3. Model project instantiation
 
     Workflows are abstracted into individual project instances which contain specified configurations and metadata. 
 
 
-**Commands**
+## Motivations
+
+
+## Instructions to Download
+
+1. 
+## Instructions to Run
+
+**Curl Test Command**
 
 ```bash
-# Project Store level
-xgb init {r|c} {project_name}
-xgb list
-xgb delete {project_name}
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+        "data": [
+            {
+                "Id": 1,
+                "SepalLengthCm": 5.1,
+                "SepalWidthCm": 3.5,
+                "PetalLengthCm": 1.4,
+                "PetalWidthCm": 0.2
+            }
+        ]
+      }'
+```
 
-# Data Store level
-xgb add {data_path} {data_name}
-xgb data
-xgb expand {data_name}
-xgb remove {data_name}
 
-# Project Instance level
-xgb train {project_name} {dataset}
-xgb config {project_name} 
-xgb show {project_name}
 
+## Documentation
+
+**XGB**
+
+```bash
+(xgb-ork) bash xgb-ork % xgb --help
+Usage: xgb [OPTIONS] COMMAND [ARGS]...
+
+  xgb is a supervised ML workflow orchestrator for xgboost models.
+
+  xgb simplifies the development, tracking, monitoring, and deployment.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  add     Add dataset to datastore.
+  config  Configure the model parameters for a project.
+  data    Display available datasets.
+  delete  Delete a project.
+  expand  Display the contents of a particular dataset.
+  init    Initialize a project.
+  list    List existing projects.
+  remove  Remove a dataset from the datastore.
+  run     Run an inference server for the specified project and model.
+  show    Display metadata of a project.
+  train   Train XGB model with dataset.
+```
+
+### Commands 
+
+
+```bash
+(xgb-ork) bash xgb-ork % xgb add --help
+Usage: xgb add [OPTIONS] DATA_PATH DATASET
+
+  Add dataset to datastore.
+
+Options:
+  --help  Show this message and exit.
+```
+
+
+```bash
+(xgb-ork) bash xgb-ork % xgb config --help
+Usage: xgb config [OPTIONS] PROJECT_NAME
+
+  Configure the model parameters for a project.
+
+Options:
+  --help  Show this message and exit.
+```
+
+
+```bash
+(xgb-ork) bash xgb-ork % xgb data --help  
+Usage: xgb data [OPTIONS]
+
+  Display available datasets.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb delete --help
+Usage: xgb delete [OPTIONS] PROJECT_NAME
+
+  Delete a project.
+
+Options:
+  --help  Show this message and exit.
+```
+
+
+```bash
+(xgb-ork) bash xgb-ork % xgb expand --help
+Usage: xgb expand [OPTIONS] DATASET
+
+  Display the contents of a particular dataset.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb init --help  
+Usage: xgb init [OPTIONS] PROJECT_NAME {r|c}
+
+  Initialize a project.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb list --help
+Usage: xgb list [OPTIONS]
+
+  List existing projects.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb remove --help
+Usage: xgb remove [OPTIONS] DATASET
+
+  Remove a dataset from the datastore.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb run --help   
+Usage: xgb run [OPTIONS] PROJECT_NAME MODEL_NAME
+
+  Run an inference server for the specified project and model.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb show --help
+Usage: xgb show [OPTIONS] PROJECT_NAME
+
+  Display metadata of a project.
+
+Options:
+  --help  Show this message and exit.
+```
+
+```bash
+(xgb-ork) bash xgb-ork % xgb train --help
+Usage: xgb train [OPTIONS] PROJECT_NAME DATASET
+
+  Train XGB model with dataset.
+
+Options:
+  --help  Show this message and exit.
 ```

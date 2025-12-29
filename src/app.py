@@ -41,7 +41,7 @@ def list():
 @cli.command()
 @click.argument("project_name")
 def delete(project_name: str):
-    '''Delete a project'''
+    '''Delete a project.'''
     projectstore.delete(name=project_name)
 
 
