@@ -16,7 +16,8 @@ import time
 from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
-import json 
+from pprint import pformat 
+import json
 import numpy as np 
 
 from util.types import Status, PredictionType
@@ -261,7 +262,7 @@ class Project:
         print(f"Created At: {info["project_info"]["created_at"]}")
         print(f"Prediction Type: {info["project_info"]["prediction_type"]}") 
         print(f"Available Models: {[model[:-5] for model in self.models]}")
-        print(f"Latest Model Run: {info["project_info"]["models"][-1] if len(info["project_info"]["models"]) != 0 else "None"}") 
+        print(f"Latest Model Run: {pformat(info["project_info"]["models"][-1]) if len(info["project_info"]["models"]) != 0 else "None"}") 
 
 
 
