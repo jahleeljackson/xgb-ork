@@ -121,9 +121,11 @@ class Project:
 
         logger.info(f"Model metrics successfully saved for {model_name}")
 
+
         if self.save_model(model_name=model_name, model=xgb) == Status.Ok:
             print(f"XGBoost model successfully saved to {model_name}.")
 
+        self.models = self._get_models()
 
     def config_model(self) -> None:
 
@@ -258,7 +260,8 @@ class Project:
         print(f"Project Name: {info["project_info"]["name"]}") 
         print(f"Created At: {info["project_info"]["created_at"]}")
         print(f"Prediction Type: {info["project_info"]["prediction_type"]}") 
-        print(f"Latest Model Run: {info["project_info"]["models"][-1]}") 
+        print(f"Available Models: {[model[:-5] for model in self.models]}")
+        print(f"Latest Model Run: {info["project_info"]["models"][-1] if len(info["project_info"]["models"]) != 0 else "None"}") 
 
 
 
@@ -299,7 +302,7 @@ class Project:
 
     def _get_models(self):
         models_dir = self.path + "/models"
-        return os.listdir(models_dir)
+        return [m for m in os.listdir(models_dir) if m != ".gitkeep"]
     
     def _get_time(self) -> str:
         tz = ZoneInfo("UTC")

@@ -17,10 +17,6 @@ class DataStore:
 
         self.files = self._get_files()
 
-        if f"{file_name}.csv" in self.files:
-            raise click.UsageError(f"{file_name}.csv already exists.")
-
-
         file_path: str = self.root + f"/{file_name}.csv"
 
         try:
@@ -56,6 +52,7 @@ class DataStore:
         if not self.files:
             print("No datasets available.")
         else:
+            print("Datasets:")
             for file in self.files:
                 print(file) 
 
@@ -82,4 +79,6 @@ class DataStore:
 
 
     def _get_files(self):
-        return os.listdir(self.root).remove(".gitkeep")
+        files = os.listdir(self.root)
+        # Filter out .gitkeep and any other non-project files
+        return [f for f in files if f != ".gitkeep"]
