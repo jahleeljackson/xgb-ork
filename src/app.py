@@ -5,9 +5,6 @@ from util.Project import Project
 from util.ProjectStore import ProjectStore
 from util.types import PredictionType
 
-regression = PredictionType.R 
-classification = PredictionType.C
-
 datastore = DataStore()
 projectstore = ProjectStore()
 

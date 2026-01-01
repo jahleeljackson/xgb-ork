@@ -82,4 +82,3 @@ class ProjectStore:
         now = datetime.now(tz)
         return str(now)[:10]
     
-

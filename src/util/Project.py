@@ -17,8 +17,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import uvicorn
 from pprint import pformat 
-import json
-import numpy as np 
 
 from util.types import Status, PredictionType
 from util.DataStore import DataStore 
@@ -243,19 +241,6 @@ class Project:
         )
 
 
-    def delete_model(self, name: str) -> Status:
-
-        model_path = self.path + f"/models/{name}.pkl"
-
-        try:
-            subprocess.run(["rm", "-rf", model_path], check=True)
-            self.models = self._get_models()
-            return Status.Ok
-        
-        except:
-            return Status.Err
-        
-
     def show(self) -> None:
         info: Dict = self.modelinfo.read()
         print(f"Project Name: {info["project_info"]["name"]}") 
@@ -295,10 +280,6 @@ class Project:
         
         except Exception as e:
             print(f"Error loading model parameters for {self.name}: ", e)
-
-
-    def _get_champion(self):
-        pass
 
 
     def _get_models(self):

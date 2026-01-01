@@ -43,7 +43,7 @@ If the goal was to better understand the tradeoff decisions of AI/ML engineers, 
 
 ## Example Workflow
 
-Feel free to watch this [video]() of me giving a project demo. Otherwise follow the steps below after downloading this repo:
+Feel free to watch this [video](https://youtu.be/I2gQX0WjA2M) of me giving a project demo. Otherwise follow the steps below after downloading this repo:
 
 1. Initialize a new project using the init command.
 ```bash
